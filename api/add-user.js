@@ -8,10 +8,10 @@ function getExpiry(plan) {
   if (plan === "30d") return now + 86400 * 30;
 }
 
-export default async function handler(req, res) {
-  if (req.headers.cookie !== "admin=1") {
-    return res.status(403).end();
-  }
+//export default async function handler(req, res) {
+//  if (req.headers.cookie !== "admin=1") {
+//  return res.status(403).end()//
+//  }//
 
   const { user, pass, plan } = req.body;
 
