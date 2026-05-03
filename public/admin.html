@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#111;color:white;font-family:sans-serif">
+<h2>Admin Panel</h2>
+
+<input id="u" placeholder="user">
+<input id="p" placeholder="pass">
+<select id="plan">
+  <option value="1d">1d</option>
+  <option value="7d">7d</option>
+  <option value="30d">30d</option>
+  <option value="lifetime">lifetime</option>
+</select>
+<button onclick="add()">Add</button>
+
+<ul id="list"></ul>
+
+<script>
+async function load() {
+  let res = await fetch('/api/users');
+  let data = await res.json();
+  let html = "";
+  data.forEach(u => {
+    html += `<li>${u.user}
+    <button onclick="del('${u.user}')">X</button></li>`;
+  });
+  document.getElementById("list").innerHTML = html;
+}
+
+async function add() {
+  await fetch('/api/add-user', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      user:u.value,
+      pass:p.value,
+      plan:plan.value
+    })
+  });
+  load();
+}
+
+async function del(user) {
+  await fetch('/api/delete-user', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({user})
+  });
+  load();
+}
+
+load();
+</script>
+</body>
+</html>
